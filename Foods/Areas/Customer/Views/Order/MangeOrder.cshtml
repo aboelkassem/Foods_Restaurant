@@ -1,0 +1,87 @@
+﻿@model List<Foods.Models.ViewModels.OrderDetailsViewModel>
+@using Foods.Utility;
+@{
+    ViewData["Title"] = "MangeOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-info">Mange Order's</h2>
+<form method="post">
+    <br />
+    @if (Model.Count > 0)
+    {
+        <div class="container row bg-white p-2 border mb-3 rounded">
+            @foreach (var order in Model)
+            {
+                <div class="col-12 pb-3 pt-3">
+                    <div class="backgroundWhiteBorder10Padding">
+                        <div class="row">
+                            <div class="col-4">
+                                Order Number: @order.OrderHeader.Id
+                                <ul class="text-info">
+                                    @foreach (var details in order.OrderDetails)
+                                    {
+                                        <li>@details.Name x @details.Count</li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="col-4 pb-2">
+                                <div class="input-group pb-2">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Time</span>
+                                    </div>
+                                    <input type="text" class="border rounded form-control" readonly value="@order.OrderHeader.PickUpTime" />
+                                </div>
+                                @{
+                                    var comments = order.OrderHeader.Comments;
+                                    if (comments == null || comments.Trim().Length == 0)
+                                    {
+                                        order.OrderHeader.Comments = "No Instructions";
+                                    }
+                                }
+                                <textarea asp-for="@order.OrderHeader.Comments" readonly class="rounded border form-control" style="width:100%;height:75px;"></textarea>
+                            </div>
+                            <div class="col-3 offset-1 d-flex align-content-center">
+                                @if (order.OrderHeader.Status.Equals(SD.StatusSubmitted))
+                                {
+                                    <div class="col-12">
+                                        <button type="submit" asp-action="OrderPrepare" asp-route-OrderId="@order.OrderHeader.Id" class="btn btn-info form-control mb-3">
+                                            <i class="fas fa-check"></i> &nbsp; Start Cooking
+                                        </button>
+                                        <button type="submit" asp-action="OrderCancel" asp-route-OrderId="@order.OrderHeader.Id" class="btn btn-danger form-control mb-3">
+                                            <i class="fas fa-times"></i> &nbsp; Cancel Order
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @if (order.OrderHeader.Status.Equals(SD.StatusInProcess))
+                                    {
+                                        <div class="col-12">
+                                            <button type="submit" asp-action="OrderReady" asp-route-OrderId="@order.OrderHeader.Id" class="btn btn-success form-control mb-3">
+                                                <i class="fas fa-flag-checkered"></i> &nbsp; Order Ready
+                                            </button>
+                                            <button type="submit" asp-action="OrderCancel" asp-route-OrderId="@order.OrderHeader.Id" class="btn btn-danger form-control mb-3">
+                                                <i class="fas fa-times"></i> &nbsp; Cancel Order
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="container row bg-white p-2 border mb-3 rounded">
+            <div class="col-12 pb-3 pt-3">
+                <div class="backgroundWhiteBorder10Padding">
+                    <p class="text-info">There Is No Orders yet...</p>
+                </div>
+            </div>
+        </div>
+    }
+</form>

@@ -1,0 +1,100 @@
+﻿@model Foods.Models.ViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+
+
+@if (Model.Coupons.ToList().Count > 0)
+{
+    <div class="border mt-5">
+        <div class="carousel" data-ride="carousel" data-interval="2500">
+            @for (int i = 0; i < Model.Coupons.Count(); i++)
+            {
+                if (i == 0)
+                {
+
+                    <div class="carousel-item active">
+                        @{
+                            var base64 = Convert.ToBase64String(Model.Coupons.ToList()[i].Picture);
+                            var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                        }
+
+                        <img src="@imgsrc" height="50px" class="d-block w-100" />
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item">
+                        @{
+                            var base64 = Convert.ToBase64String(Model.Coupons.ToList()[i].Picture);
+                            var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                        }
+
+
+                        <img src="@imgsrc" height="50px" class="d-block w-100" />
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
+
+<br />
+<br />
+
+<div class="backgroundWhite container">
+
+    <ul id="menu-filters" class="menu-filter-list list-inline text-center">
+        <li class="active btn btn-secondary m-1 mr-1" data-filter=".menu-restaurant">Show All</li>
+
+        @foreach (var item in Model.Categories)
+        {
+            <li class="menu-filter-list  m-1 mr-1" data-filter=".@item.Name.Replace(" ",string.Empty)">@item.Name</li>
+        }
+    </ul>
+
+    @foreach (var category in Model.Categories)
+    {
+        <div class="row" id="menu-wrapper">
+            <partial name="_ThumbnailAreaPartial" model="@Model.MenuItems.Where(u=>u.Category.Name.Equals(category.Name))" />
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="~/js/jquery.simpleLoadMore.min.js"></script>
+
+    <script>
+        $('.some-list').simpleLoadMore({
+            item: 'section',
+            btnHTML: '<a href="#" class="load-more__btn btn btn-outline-info offset-5">View More ... <i class="fas fa-angle-down"></i></a>',
+            count: 3
+        });
+    </script>
+    <script>
+
+        var posts = $('.post');
+
+        (function ($) {
+            $('#menu-filters li').click(function () {
+                $("#menu-filters li").removeClass('active btn btn-secondary');
+                $(this).addClass('active btn btn-secondary');
+
+                var selectedFilter = $(this).data("filter");
+
+                $(".menu-restaurant").fadeOut();
+
+                setTimeout(function () {
+                    $(selectedFilter).slideDown();
+                }, 300);
+            });
+        })(jQuery);
+
+    </script>
+}

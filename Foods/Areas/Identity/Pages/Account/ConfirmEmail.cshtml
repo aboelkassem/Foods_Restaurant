@@ -1,0 +1,9 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+<h1>@ViewData["Title"]</h1>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<a asp-action="Index" asp-controller="Home" asp-area="Customer" class="btn btn-outline-success">Click her to continue</a>

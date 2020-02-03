@@ -1,0 +1,19 @@
+﻿@model OrderHeader
+@using Foods.Utility
+
+@if (Model.Status == SD.StatusSubmitted)
+{
+    <img src="~/images/@SD.OrderPlaced" class="rounded img-fluid" />
+}
+@if (Model.Status == SD.StatusInProcess)
+{
+    <img src="~/images/@SD.OrderInKitcken" class="rounded img-fluid" />
+}
+@if (Model.Status == SD.StatusReady)
+{
+    <img src="~/images/@SD.OrderReadyForPickUp" class="rounded img-fluid" />
+}
+@if (Model.Status == SD.StatusCompleted)
+{
+    <img src="~/images/@SD.OrderCompleted" class="rounded img-fluid" />
+}

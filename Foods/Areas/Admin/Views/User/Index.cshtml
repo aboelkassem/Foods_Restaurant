@@ -1,0 +1,124 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<div class="border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info"> Users  List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info"><i class="fas fa-plus"></i> &nbsp; New Employee  Registeration</a>
+        </div>
+    </div>
+    <br />
+    <div>
+        @if (Model.Count() > 0)
+        {
+            <table id="DT_load" class="table table-striped border">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        }
+        else
+        {
+            <p> No Users exists....</p>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        var dataTable;
+
+        $(document).ready(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            dataTable = $('#DT_load').DataTable({
+                "ajax": {
+                    "url": "/Admin/User/GetUsers",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "name", "width": "20%" },
+                    { "data": "email", "width": "20%" },
+                    { "data": "phoneNumber", "width": "20%" },
+                    { "data": "role", "width": "20%" },
+                    {
+                        "data": {
+                            id: "id",
+                            lockoutEnd: "lockoutEnd"
+                        },
+
+                        "render": function (data) {
+                            var today = new Date().getTime();
+                            var lockout = new Date(data.lockoutEnd).getTime();
+
+                            if (lockout > today) {
+                                //user is currently locked
+                                return `
+                                    <div class="text-center">
+                                        <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
+                                            <i class="fas fa-lock-open"></i>  Unlock
+                                        </a>
+                                    </div>
+                                   `;
+                            }
+                            else {
+                                return `
+                                    <div class="text-center">
+                                        <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                            <i class="fas fa-lock"></i>  Lock
+                                        </a>
+                                    </div>
+                                   `;
+                            }
+                        }, "width": "10%"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "no data found"
+                },
+                "width": "100%"
+            });
+        }
+
+        function LockUnlock(id) {
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/User/LockUnlock',
+                data: JSON.stringify(id),
+                contentType: "application/json",
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        dataTable.ajax.reload();
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+
+        }
+
+    </script>
+}

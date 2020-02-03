@@ -1,0 +1,78 @@
+﻿@model Coupon
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="text-info">@Model.Name</h2>
+<br />
+
+
+<div class="border backgroundWhite row">
+    <br />
+    <div class="col-12 border">
+        @{
+            var base64 = Convert.ToBase64String(Model.Picture);
+            var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+        }
+        <img src="@imgsrc" height="100%" width="100%" />
+    </div>
+
+    <div class="col-12 pt-4">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Name" disabled class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="CouponType" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                @*<select asp-for="CouponType" asp-items="Html.GetEnumSelectList<Coupon.ECouponType>()" class="form-control"></select>*@
+                <input type="text" value="@Enum.GetName(typeof(Coupon.ECouponType),Convert.ToInt32(Model.CouponType))" disabled class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Discount" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Discount" disabled class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="MinimumAmount" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="MinimumAmount" disabled class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="IsActive" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input type="checkbox" disabled asp-for="IsActive" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <partial name="_DetailsAndBackToListButton" model="Model.Id" />
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

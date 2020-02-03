@@ -1,0 +1,67 @@
+﻿@model Foods.Models.ViewModels.SubCategoryVM
+
+@{
+    ViewData["Title"] = "SubCategories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<div class="border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info"> Sub Category List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <partial name="_CreateButtonPartial" />
+        </div>
+    </div>
+    <br />
+    <div>
+        @if (Model.SubCategories.Count() > 0)
+        {
+            <table class="table table-striped border">
+                <tr class="table-secondary">
+                    <th>
+                        @*<label asp-for="First().Name"></label>*@
+                        @Html.DisplayNameFor(m => m.SubCategories[0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.SubCategories[0].Category.Name)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var subCategory in Model.SubCategories)
+                {
+                    <tr>
+                        <td>
+                            @*<label asp-for="category.Name"></label>*@
+                            @Html.DisplayFor(m => subCategory.Name)
+                        </td>
+                        <td>
+                            @*<label asp-for="category.Name"></label>*@
+                            @Html.DisplayFor(m => subCategory.Category.Name)
+                        </td>
+                        <td>
+                            <partial name="_TableButtonPartial" model="subCategory.Id" />
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div page-model="@Model.PagingInfo"
+                 page-classes-enabled="true"
+                 page-class="btn border ml-1"
+                 page-class-normal="btn btn-outline-primary"
+                 page-class-selected="btn btn-info active"
+                 class="btn btn-group float-right">
+            </div>
+        }
+        else
+        {
+            <p> No sub category exists....</p>
+        }
+
+    </div>
+</div>
+

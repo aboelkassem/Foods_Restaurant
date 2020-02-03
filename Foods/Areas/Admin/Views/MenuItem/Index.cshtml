@@ -1,0 +1,169 @@
+﻿@model IEnumerable<MenuItem>
+
+@{
+    ViewData["Title"] = "Menu Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<div class="border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info"> Menu Item List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <partial name="_CreateButtonPartial" />
+        </div>
+    </div>
+    <br />
+    <div>
+        @if (Model.Count() > 0)
+        {
+            //This Old Table without paging, sorting, searching functionilty so it's look very long
+            /*
+            <table class="table table-striped table-bordered">
+                <tr class="table-secondary">
+                    @*<th>
+                        @Html.DisplayNameFor(m => m.Image)
+                    </th>*@
+                    <th>
+                        @*<label asp-for="First().Name"></label>*@
+                        @Html.DisplayNameFor(m => m.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.CategoryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.SubCategoryId)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var menuItem in Model)
+                {
+                    <tr>
+                        @*<td style="width:10%;">
+                            <img src="@Url.Content(menuItem.Image)" class="img-thumbnail rounded-circle" style="width:75%;"/>
+                        </td>*@
+                        <td>
+                            @*<label asp-for="category.Name"></label>*@
+                            @Html.DisplayFor(m => menuItem.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => menuItem.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => menuItem.Category.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => menuItem.SubCategory.Name)
+                        </td>
+                        <td>
+                            <partial name="_TableButtonPartial" model="menuItem.Id" />
+                        </td>
+                    </tr>
+                }
+            </table>
+            */
+
+            // Datatable plugin depend on jquery, ajax which has searching , sorting, paging functionility
+            <table id="DT_load" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th> Price</th>
+                        <th> Category</th>
+                        <th> SubCategory</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+            
+        }
+        else
+        {
+            <p> No Menu items exists....</p>
+        }
+
+    </div>
+</div>
+
+@section Scripts { 
+    
+    <script>
+        var dataTable;
+
+        $(document).ready(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            dataTable = $('#DT_load').DataTable({
+                "ajax": {
+                    "url": "/Admin/MenuItem/GetMenuItems",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "name", "width": "20%" },
+                    { "data": "price", "width": "20%" },
+                    { "data": "category.name", "width": "20%" },
+                    { "data": "subCategory.name", "width": "20%" },
+                    {
+                        "data": "id",
+                        "render": function (data) {
+                            return `@{
+                                    <td style="width:150px">
+                                        <div class="btn btn-group" role="group">
+                                            <a class="btn btn-primary text-white" href="@Url.Action("Edit")/${data}"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-success text-white" href="@Url.Action("Details")/${data}"><i class="fas fa-list-alt"></i></a>
+                                            @*<a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@Model"><i class="fas fa-trash-alt"></i></a>*@
+                                            <button asp-action="Delete" onclick="CustomDelete('@Url.Action("Delete")'+'/${data}')" class="btn btn-danger text-white"><i class="fas fa-trash-alt"></i></button>
+                                        </div>
+                                    </td>
+                                    }
+                                    `;
+                        }, "width": "40%"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "no data found"
+                },
+                "width": "100%"
+            });
+        }
+
+        function CustomDelete(url) {
+            swal({
+                title: "Are you sure To Delete ?",
+                text: "Once deleted, you will not be able to recover",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: url,
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.message);
+                                dataTable.ajax.reload();
+                            }
+                            else {
+                                toastr.error(data.message);
+                                //console.log(url);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+}
+

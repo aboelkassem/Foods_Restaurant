@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br /><br />
+<div class="border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info"> Category List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <partial name="_CreateButtonPartial"/>
+        </div>
+    </div>
+    <br />
+    <div>
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-striped border">
+                <tr class="table-secondary">
+                    <th>
+                        @*<label asp-for="First().Name"></label>*@
+                        @Html.DisplayNameFor(m => m.Name)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td>
+                            @*<label asp-for="category.Name"></label>*@
+                            @Html.DisplayFor(m => category.Name)
+                        </td>
+                        <td>
+                            <partial name="_TableButtonPartial" model="category.Id"/>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p> No category exists....</p>
+        }
+
+    </div>
+</div>
+
