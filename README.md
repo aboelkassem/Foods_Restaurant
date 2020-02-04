@@ -11,10 +11,9 @@ Foods Restaurant where yours would be able to place order using credit card and 
 
 # Demo
 - For testing, you can login any role (blews) you need, they have the same (Password: Admin123):
-
-    Manager User:        admin@gmail.com
-    Kitchen User:        kitchen@gmail.com
-    Front Desk User:     front@gmail.com
+    - Manager User:        admin@gmail.com
+    - Kitchen User:        kitchen@gmail.com
+    - Front Desk User:     front@gmail.com
     
 - In order to place order you can use any test credit card number supported by stripe.
     A default example is 4242 4242 4242 4242, valid date , any 3 digit CVV.
