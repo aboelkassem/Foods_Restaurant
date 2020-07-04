@@ -16,4 +16,4 @@ Foods Restaurant where yours would be able to place order using credit card and 
     - Front Desk User:     front@gmail.com
     
 - In order to place order you can use any test credit card number supported by stripe.
-    A default example is 4242 4242 4242 4242, valid date , any 3 digit CVV.
+    A default example is 4242 4242 4242 4242, any valid date , any 3 digit CVV.
