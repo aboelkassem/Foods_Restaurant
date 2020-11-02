@@ -4,10 +4,10 @@ Foods Restaurant where yours would be able to place order using credit card and 
 
 # Features
 - Full CURD Operations for admininstarator for contorl his system
-- Build with asp.net core 3.1, EntityFramework core with code first approch, jQuery, Bootstrap 4, AJAX, WebApi...etc
+- Build with asp.net core 3.1, EntityFramework core with code first approch, jQuery, Bootstrap 4, AJAX
 - Including alot of functionalities Areas like Customer, Admin, Identity
 - Using Third parts like Stripe payment gateway for credit cards and SendGrid gateway for sending emails
-- Using very nice javascript plugins Like Datatable.js, timepicker.js, timepicker.js, sweetalert.js, fontawesome ... etc
+- Using very nice javascript plugins Like Datatable.js, timepicker.js, toastr, sweetalert.js, fontawesome
 
 # Demo
 - For testing, you can login any role (blews) you need, they have the same (Password: Admin123):
