@@ -1,6 +1,7 @@
 # Foods_Restaurant
-This project for creating a restaurant managament system to enable customers to order food online and get delieverd for them.
-Foods Restaurant where yours would be able to place order using credit card and admin would manage order placed all the way till it is picked up.
+This project for creating a restaurant management system to enable customers to order food online and get delivered for them. 
+<br>
+Foods Restaurant where yours would be able to place an order using a credit card and admin would manage order placed all the way till it is picked up.
 
 # Features
 - Full CURD Operations for admininstarator for contorl his system
