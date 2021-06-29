@@ -49,14 +49,14 @@ namespace Foods
 
             services.AddAuthentication().AddFacebook(facebookOptions => 
             {
-                facebookOptions.AppId = "2472329526363094";
-                facebookOptions.AppSecret = "29aa32b30c406fbb242d75e3bba41d2d";
+                facebookOptions.AppId = "";
+                facebookOptions.AppSecret = "";
             });
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = "1088371421677-r1vdip2a4ck604cse5m2jdqimqg9u5ar.apps.googleusercontent.com";
-                googleOptions.ClientSecret = "6m5p6hiR2HQNX0zkGG8NiYG2";
+                googleOptions.ClientId = "";
+                googleOptions.ClientSecret = "";
             });
 
             services.Configure<IdentityOptions>(options =>
